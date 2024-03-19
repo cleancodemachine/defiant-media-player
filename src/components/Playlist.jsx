@@ -21,7 +21,7 @@ function Playlist() {
             }
         });
     }
-    const url = 'http://localhost:3001/tracks';
+    const url = 'https://cleancodemachine.github.io/host_api/tracks.json';
     // Use useState to create a state variable to hold the tracks data
     const [tracks, setTracks] = useState([]);
     // Use useEffect to fetch the data when the component mounts

@@ -4,7 +4,7 @@ body {
   font-family: sans-serif;
   margin: 0 auto;
   padding: 25px;
-  max-width: 400px;
+  max-width: 600px;
   min-width: 400px;
   background-color: #dfe6e9;
   text-align: center;
@@ -129,4 +129,36 @@ body {
 .info {
   margin: 20px 0;
   color: #1a7e76;
+}
+
+@media only screen and (min-width: 992px) and (max-width: 1199px) {
+
+  body {
+    min-width: 600px;
+    max-width: 600px;
+  }
+}
+
+@media only screen and (min-width: 768px) and (max-width: 991px) {
+
+  body {
+    min-width: 400px;
+    max-width: 600px;
+  }
+}
+
+@media only screen and (min-width: 559px) and (max-width: 767px) {
+
+  body {
+    min-width: 400px;
+    max-width: 400px;
+  }
+}
+
+@media only screen and (min-width: 280px) and (max-width: 558px) {
+
+  body {
+    min-width: 200px;
+    max-width: 300px;
+  }
 }
