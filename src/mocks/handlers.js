@@ -2,7 +2,7 @@ import { http, HttpResponse } from "msw";
 
 export const handlers = [
     // Handles a GET request
-    http.get('http://localhost:3001/tracks', () => {
+    http.get('https://cleancodemachine.github.io/host_api/tracks.json', () => {
         return HttpResponse.json(
             [
                 {
