@@ -1,10 +1,9 @@
 import { render, screen} from '@testing-library/react';
 import Status from '../components/Status';
 
-import {test, expect, vi} from 'vitest';
+import {test, expect} from 'vitest';
 import '@testing-library/jest-dom'
-import Song from "../components/Song.jsx";
-import React from "react";
+
 
 
 test('Status component renders correctly', () => {
