@@ -10,6 +10,17 @@ import Pause from './Pause.jsx';
 
 
 function Playlist() {
+    function transform(data) {
+        return data.map(dataItem => {
+            if (dataItem.hasOwnProperty('title')) {
+                return { ...dataItem, name: dataItem.title, type: "song" };
+            } else if (dataItem.hasOwnProperty('episodeTitle')) {
+                return { ...dataItem, name: dataItem.episodeTitle, type: "podcast" };
+            } else {
+                return dataItem;
+            }
+        });
+    }
     const url = 'http://localhost:3001/tracks';
     // Use useState to create a state variable to hold the tracks data
     const [tracks, setTracks] = useState([]);
@@ -25,16 +36,17 @@ function Playlist() {
                 return response.json();
             })
             .then((data) => {
-                console.log('data', data);
+
                 // Update the state with the fetched data
-                setTracks(data);
-                console.log("Data is updated");
+                //console.log('Data:', data);
+                setTracks(transform(data));
             })
             .catch((error) => {
                 // Handle any errors that occurred during the fetch
                 console.error('Error fetching the data:', error);
             });
     }, []);
+
 
     const [nowPlayingIndex, setNowPlayingIndex] = useState(null);
     const [nowPlaying, setNowPlaying] = useState("");
@@ -50,14 +62,12 @@ function Playlist() {
        return tracks.findIndex(t => t.title === track || t.episodeTitle === track);
    }
 
-  function getTitle(int) {
-      const track = tracks[int];
-      if (track.hasOwnProperty('artist')) {
-        return track.title;
-      } else if (track.hasOwnProperty('episodeTitle')) {
-        return track.episodeTitle;
-      }
-  }
+
+
+    function getTitle(int) {
+        const track = tracks[int];
+        return track.name;
+    }
 
     function skipTrack() {
         let int = nowPlayingIndex;
@@ -82,6 +92,7 @@ function Playlist() {
             int = int - 1;
             setNowPlayingIndex(int);
         }
+        console.log('Index:', int);
         setNowPlaying(getTitle(int));
     }
 
@@ -89,29 +100,42 @@ function Playlist() {
         if (isPlaying === 1) {
             setPlaying(2);
         } else if (isPlaying === 0) {
-            setPlaying(1);
             setNowPlayingIndex(0);
             setNowPlaying(getTitle(0));
-        }
-        else {
+            setPlaying(1);
+        } else {
             setPlaying(1);
         }
     }
 
-    function shuffle() {
+    function fisherYatesShuffle(tracks) {
         for (let i = tracks.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1));
             [tracks[i], tracks[j]] = [tracks[j], tracks[i]];
-          } 
-          {tracks.map((track, index) => {
-            if (track.hasOwnProperty('artist')) {
+        }
+        return tracks;
+    }
+
+    function shuffle() {
+        // Make sure first track is not the same
+        const firstTrack = tracks[0];
+        let shuffledTracks = fisherYatesShuffle(tracks);
+        while (shuffledTracks[0].name === firstTrack.name) {
+            shuffledTracks = fisherYatesShuffle(tracks);
+        }
+
+
+
+
+          {shuffledTracks.map((track, index) => {
+            if (track.type ==='song') {
                 return <Song key={index} {...track} onAdd={setPlay}/>;
-            } else if (track.hasOwnProperty('episodeTitle')) {
-                return <Podcast key={index} {...track} onAdd={setPlay}/>;
+            } else if (track.type === 'podcast') {
+                return <Podcast key={index} {...track}  onAdd={setPlay}/>;
             } else {
                 return null;
             }
-            })} 
+            })}
             setNowPlaying(getTitle(0));
             setNowPlayingIndex(0);
             setPlaying(1);
@@ -131,9 +155,9 @@ function Playlist() {
                 </div>
             </div>
             {tracks.map((track, index) => {
-                if (track.hasOwnProperty('artist')) {
+                if (track.type ==='song') {
                     return <Song key={index} {...track} onAdd={setPlay}/>;
-                } else if (track.hasOwnProperty('episodeTitle')) {
+                } else if (track.type ==='podcast') {
                     return <Podcast key={index} {...track} onAdd={setPlay}/>;
                 } else {
                     return null;

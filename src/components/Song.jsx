@@ -102,11 +102,3 @@ function Song(props) {
 export default Song;
 
 
-/*
-  const [isPlaying, setPlaying] = useState(false);
-
-  function handlePodcastClick() {
-    //set other components to false
-    setPlaying(true);
-  }
-  */
