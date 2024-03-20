@@ -38,7 +38,7 @@ function Playlist() {
             .then((data) => {
 
                 // Update the state with the fetched data
-                //console.log('Data:', data);
+                console.log('Data:', data);
                 setTracks(transform(data));
             })
             .catch((error) => {
